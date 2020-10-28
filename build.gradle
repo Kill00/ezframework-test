@@ -1,4 +1,7 @@
-apply plugin: 'java'
+plugins {
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id 'java'
+}
 
 group = properties["pluginGroup"]
 version = properties["pluginVersion"]
@@ -25,12 +28,12 @@ repositories {
 dependencies {
     compileOnly 'com.destroystokyo.paper:paper-api:1.16.1-R0.1-SNAPSHOT'
 
-    implementation 'org.jetbrains:annotations:19.0.0'
+    compileOnly 'org.jetbrains:annotations:19.0.0'
 
-    compile 'com.github.bagble.ezframework:ezframework-core:1.1.1'
-    compile group: 'org.reflections', name: 'reflections', version: '0.9.5-RC2'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.0-rc1'
-    compile group: 'commons-io', name: 'commons-io', version: '2.8.0'
+    implementation('com.github.bagble.ezframework:ezframework-core:1.1.1')
+    compileOnly group: 'org.reflections', name: 'reflections', version: '0.9.5-RC2'
+    compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.0-rc1'
+    compileOnly group: 'commons-io', name: 'commons-io', version: '2.8.0'
 
 }
 
@@ -47,9 +50,22 @@ tasks {
             expand(project.properties)
         }
     }
+    jar {
+        finalizedBy shadowJar {
+            archiveBaseName.set("EzFramework-Test")
+            archiveClassifier.set("")
+            archiveVersion.set("")
+        }
+        enabled(false)
+        manifest {
+            attributes 'Main-Class': 'com.teamvery.ezframeworktest.main'
+        }
+        assemble {
+            dependsOn(shadowJar)
+        }
+    }
 }
 
 clean {
     file('build/resources').deleteDir()
 }
-

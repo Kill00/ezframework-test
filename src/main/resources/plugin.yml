@@ -3,6 +3,5 @@ version: $pluginVersion
 main: $pluginMain
 api-version: 1.16
 authors: [ TeamVery ]
-depend: [ EzFrameworkLib ]
 description: EzFramework를 테스트하는 플러그인입니다.
 website: https://github.com/TeamVery
