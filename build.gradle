@@ -1,0 +1,55 @@
+apply plugin: 'java'
+
+group = properties["pluginGroup"]
+version = properties["pluginVersion"]
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'papermc-repo'
+        url = 'https://papermc.io/repo/repository/maven-public'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public'
+    }
+    maven {
+        name = 'jitpack'
+        url = 'https://jitpack.io'
+    }
+}
+
+dependencies {
+    compileOnly 'com.destroystokyo.paper:paper-api:1.16.1-R0.1-SNAPSHOT'
+
+    implementation 'org.jetbrains:annotations:19.0.0'
+
+    compile 'com.github.bagble.ezframework:ezframework-core:1.1.1'
+    compile group: 'org.reflections', name: 'reflections', version: '0.9.5-RC2'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.0-rc1'
+    compile group: 'commons-io', name: 'commons-io', version: '2.8.0'
+
+}
+
+tasks {
+    compileJava {
+        options.encoding = "UTF-8"
+        options.compilerArgs = ['-parameters']
+    }
+    javadoc {
+        options.encoding = "UTF-8"
+    }
+    processResources {
+        filesMatching("**/*.yml") {
+            expand(project.properties)
+        }
+    }
+}
+
+clean {
+    file('build/resources').deleteDir()
+}
+
